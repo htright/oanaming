@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오아 작명원 · 우리 아기 이름 짓는 곳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gaegu:wght@400;700&family=Nanum+Pen+Script&family=Noto+Serif+KR:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hanji:#f7f1e3;
+  --hanji-deep:#efe4cf;
+  --hanji-dark:#e3d5ba;
+  --ink:#3b2f2f;
+  --ink-soft:#6d5c52;
+  --dan-red:#b5423a;
+  --dan-red-deep:#8e2f2a;
+  --gold:#c99b3b;
+  --cheong:#4a6b5a;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  padding:0 0 60px;
+  font-family:'Gaegu','Apple SD Gothic Neo',sans-serif;
+  font-size:19px;
+  line-height:1.75;
+  color:var(--ink);
+  background-color:var(--hanji);
+  background-image:
+    radial-gradient(circle at 12% 20%, rgba(201,155,59,.10) 0, transparent 42%),
+    radial-gradient(circle at 88% 8%, rgba(181,66,58,.07) 0, transparent 38%),
+    radial-gradient(circle at 70% 92%, rgba(74,107,90,.08) 0, transparent 45%),
+    repeating-linear-gradient(92deg, rgba(160,140,105,.055) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(3deg, rgba(160,140,105,.045) 0 1px, transparent 1px 6px);
+}
+
+.wrap{max-width:660px;margin:0 auto;padding:0 18px;}
+
+/* ── 머리말 ─────────────────────────── */
+header{text-align:center;padding:40px 0 6px;position:relative;}
+header::before{
+  content:"";position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+  width:340px;height:200px;border-radius:50%;
+  background:radial-gradient(circle, rgba(201,155,59,.22) 0, transparent 68%);
+  pointer-events:none;
+}
+.lantern{font-size:30px;letter-spacing:14px;color:var(--dan-red);opacity:.75;position:relative;}
+h1{
+  font-family:'Do Hyeon',sans-serif;
+  font-size:40px;margin:6px 0 2px;letter-spacing:1px;position:relative;
+  color:var(--ink);
+}
+h1 .dot{color:var(--dan-red);}
+.tagline{
+  font-family:'Nanum Pen Script',cursive;font-size:25px;color:var(--ink-soft);
+  margin:0;position:relative;
+}
+.rule{
+  height:2px;margin:18px auto 26px;max-width:220px;
+  background:linear-gradient(90deg,transparent,var(--dan-red) 22%,var(--gold) 50%,var(--dan-red) 78%,transparent);
+  opacity:.55;
+}
+
+/* ── 탭 ─────────────────────────────── */
+.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:-2px;}
+.tab{
+  font-family:'Do Hyeon',sans-serif;font-size:20px;
+  padding:11px 22px 13px;cursor:pointer;
+  background:var(--hanji-deep);
+  color:var(--ink-soft);
+  border:2px solid var(--hanji-dark);border-bottom:none;
+  border-radius:14px 14px 0 0;
+  transition:.18s;
+}
+.tab:hover{color:var(--ink);}
+.tab.on{
+  background:var(--dan-red);color:#fff7e9;border-color:var(--dan-red);
+  box-shadow:0 -3px 0 var(--dan-red-deep) inset;
+}
+
+/* ── 종이 카드 ───────────────────────── */
+.paper{
+  background:var(--hanji-deep);
+  border:2px solid var(--hanji-dark);
+  border-radius:255px 15px 225px 15px/15px 225px 15px 255px;
+  padding:26px 24px 30px;
+  box-shadow:0 2px 0 rgba(90,70,50,.12);
+}
+
+label.q{
+  display:block;font-family:'Do Hyeon',sans-serif;font-size:19px;
+  margin:22px 0 8px;color:var(--ink);
+}
+label.q:first-of-type{margin-top:4px;}
+.hint{font-size:16px;color:var(--ink-soft);display:block;margin:4px 0 0;line-height:1.5;}
+
+select,input[type=date],input[type=text],input[type=number]{
+  font-family:'Gaegu',sans-serif;font-size:19px;color:var(--ink);
+  padding:9px 12px;width:100%;
+  background:#fffaf0;
+  border:2px solid var(--hanji-dark);border-radius:10px;
+  outline:none;
+}
+select:focus,input:focus{border-color:var(--gold);}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  font-family:'Gaegu',sans-serif;font-size:18px;
+  padding:8px 16px;cursor:pointer;
+  background:#fffaf0;color:var(--ink-soft);
+  border:2px solid var(--hanji-dark);border-radius:22px;
+  transition:.15s;
+}
+.chip:hover{border-color:var(--gold);}
+.chip.on{background:var(--cheong);color:#fdf8ee;border-color:var(--cheong);}
+
+.sijin{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.sijin .chip{
+  border-radius:12px;padding:9px 4px;text-align:center;line-height:1.25;
+}
+.sijin .chip b{display:block;font-family:'Do Hyeon',sans-serif;font-size:18px;font-weight:normal;}
+.sijin .chip small{font-size:14px;opacity:.8;}
+.sijin .chip.wide{grid-column:span 4;}
+
+.jasi-note{
+  display:none;margin-top:10px;padding:10px 14px;
+  background:#fffaf0;border:2px dashed var(--hanji-dark);border-radius:10px;font-size:17px;
+}
+.jasi-note.show{display:block;}
+.jasi-note input{width:auto;margin-right:6px;vertical-align:-2px;}
+
+.go{
+  display:block;width:100%;margin-top:30px;
+  font-family:'Do Hyeon',sans-serif;font-size:23px;letter-spacing:1px;
+  padding:15px;cursor:pointer;
+  color:#fff7e9;background:var(--dan-red);
+  border:none;border-radius:16px;
+  box-shadow:0 4px 0 var(--dan-red-deep);
+  transition:.1s;
+}
+.go:hover{background:#c04a41;}
+.go:active{transform:translateY(3px);box-shadow:0 1px 0 var(--dan-red-deep);}
+
+.err{
+  margin-top:14px;color:var(--dan-red-deep);font-size:17px;text-align:center;min-height:22px;
+}
+
+/* ── 결과 ───────────────────────────── */
+.result{margin-top:34px;display:none;}
+.result.show{display:block;animation:rise .5s ease-out;}
+@keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+.seal-line{display:flex;align-items:center;gap:14px;margin:0 0 20px;}
+.seal{
+  flex:none;width:70px;height:70px;border-radius:50%;
+  border:3px solid var(--dan-red);color:var(--dan-red);
+  font-family:'Nanum Pen Script',cursive;font-size:20px;line-height:1.05;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  transform:rotate(-9deg);
+  background:rgba(181,66,58,.06);
+  animation:stamp .45s cubic-bezier(.2,1.6,.5,1);
+}
+@keyframes stamp{from{transform:rotate(-9deg) scale(1.7);opacity:0;}to{transform:rotate(-9deg) scale(1);opacity:1;}}
+.seal-line h2{
+  font-family:'Do Hyeon',sans-serif;font-size:24px;margin:0;font-weight:normal;
+}
+.seal-line p{margin:2px 0 0;font-size:17px;color:var(--ink-soft);}
+
+/* 사주 여덟 글자 */
+.saju-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:0 0 6px;}
+.pillar{
+  background:#fffaf0;border:2px solid var(--hanji-dark);border-radius:12px;
+  padding:9px 4px 11px;text-align:center;
+}
+.pillar .cap{font-size:15px;color:var(--ink-soft);}
+.pillar .gan,.pillar .ji{
+  font-family:'Noto Serif KR',serif;font-size:27px;line-height:1.25;display:block;
+}
+.pillar .kor{font-size:15px;color:var(--ink-soft);line-height:1.3;}
+.pillar.empty .gan,.pillar.empty .ji{color:#c8bba4;}
+
+.el-목{color:#4a7c4e;} .el-화{color:#c0453c;} .el-토{color:#a37a2a;}
+.el-금{color:#7c7f88;} .el-수{color:#3c6284;}
+
+.tally{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:14px 0 4px;}
+.tally span{
+  font-family:'Do Hyeon',sans-serif;font-size:17px;
+  padding:5px 4px;border-radius:20px;text-align:center;white-space:nowrap;
+  background:#fffaf0;border:2px solid var(--hanji-dark);
+}
+.tally span.lack{border-color:var(--dan-red);background:rgba(181,66,58,.09);}
+
+.say{
+  margin:18px 0 0;padding:15px 17px;
+  background:#fffaf0;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;
+  font-size:18px;
+}
+.say b{color:var(--dan-red-deep);}
+
+h3.sub{
+  font-family:'Do Hyeon',sans-serif;font-size:21px;font-weight:normal;
+  margin:32px 0 4px;display:flex;align-items:center;gap:10px;
+}
+h3.sub::after{content:"";flex:1;height:1px;background:var(--hanji-dark);}
+
+/* 부적 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:13px;margin-top:16px;}
+.bujeok{
+  position:relative;padding:22px 10px 16px;text-align:center;
+  background:#fffdf6;
+  border:2px solid var(--dan-red);border-radius:6px 6px 12px 12px;
+  box-shadow:0 3px 0 rgba(142,47,42,.13);
+}
+.bujeok::before{
+  content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);
+  width:11px;height:11px;border-radius:50%;background:var(--dan-red);
+}
+.bujeok .rank{
+  position:absolute;top:6px;left:8px;font-size:14px;color:var(--gold);
+  font-family:'Do Hyeon',sans-serif;
+}
+.bujeok .name-kr{
+  font-family:'Do Hyeon',sans-serif;font-size:27px;letter-spacing:1px;margin-top:2px;
+}
+.bujeok .name-hj{
+  font-family:'Noto Serif KR',serif;font-size:21px;color:var(--dan-red-deep);
+  letter-spacing:3px;margin:1px 0 7px;
+}
+.bujeok .mean{font-size:15px;color:var(--ink-soft);line-height:1.45;}
+.bujeok .tags{margin-top:9px;font-size:14px;color:var(--cheong);}
+
+/* 4격 표 */
+.gyeok{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+.gyeok div{
+  background:#fffaf0;border:2px solid var(--hanji-dark);border-radius:11px;
+  padding:8px 3px 10px;text-align:center;font-size:15px;color:var(--ink-soft);
+}
+.gyeok div b{display:block;font-family:'Do Hyeon',sans-serif;font-size:19px;color:var(--ink);font-weight:normal;}
+.gyeok div em{font-style:normal;font-size:15px;}
+.gyeok div.g-길{border-color:var(--cheong);} .gyeok div.g-길 em{color:var(--cheong);}
+.gyeok div.g-흉{border-color:var(--dan-red);} .gyeok div.g-흉 em{color:var(--dan-red);}
+
+/* 판정 */
+.verdict{
+  text-align:center;padding:22px 16px 20px;margin-top:4px;
+  background:#fffdf6;border:2px solid var(--hanji-dark);
+  border-radius:225px 15px 255px 15px/15px 255px 15px 225px;
+}
+.verdict .big{
+  font-family:'Do Hyeon',sans-serif;font-size:31px;color:var(--dan-red);display:block;line-height:1.3;
+}
+.verdict .whole{
+  font-family:'Noto Serif KR',serif;font-size:23px;letter-spacing:2px;color:var(--ink-soft);
+}
+.verdict .score{font-size:17px;color:var(--ink-soft);margin-top:6px;}
+
+/* 푸터 */
+footer{
+  max-width:660px;margin:44px auto 0;padding:24px 22px;
+  border-top:2px dotted var(--hanji-dark);
+  font-size:15.5px;color:var(--ink-soft);line-height:1.75;
+}
+footer b{font-family:'Do Hyeon',sans-serif;font-weight:normal;color:var(--ink);}
+footer ul{margin:8px 0 0;padding-left:20px;}
+footer li{margin-bottom:3px;}
+.sign{text-align:center;font-family:'Nanum Pen Script',cursive;font-size:22px;margin-top:20px;color:var(--ink-soft);}
+
+@media (max-width:430px){
+  body{font-size:18px;}
+  h1{font-size:33px;}
+  .wrap{padding:0 13px;}
+  .paper{padding:20px 15px 24px;border-radius:120px 12px 120px 12px/12px 120px 12px 120px;}
+  .tab{font-size:18px;padding:10px 15px 12px;}
+  .sijin{grid-template-columns:repeat(3,1fr);}
+  .sijin .chip.wide{grid-column:span 3;}
+  .pillar .gan,.pillar .ji{font-size:23px;}
+  .tally span{font-size:15px;padding:5px 2px;}
+  .cards{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="lantern">✦ ❁ ✦</div>
+  <h1>오아 작명원<span class="dot">.</span></h1>
+  <p class="tagline">아기가 세상에 나온 그 시각으로, 이름을 살펴 드립니다</p>
+</header>
+
+<div class="wrap">
+  <div class="rule"></div>
+
+  <div class="tabs">
+    <div class="tab on" data-tab="rec">이름 지어 주세요</div>
+    <div class="tab" data-tab="chk">지은 이름 봐 주세요</div>
+  </div>
+
+  <!-- ══ 이름 추천 ══════════════════════ -->
+  <section id="pane-rec">
+    <div class="paper">
+      <label class="q">아기 성(姓)이 어떻게 되나요?</label>
+      <select id="rec-surname"></select>
+      <small class="hint">가장 많이 쓰는 한자를 기준으로 잡았어요. 집안에서 쓰는 한자가 다를 수 있습니다.</small>
+
+      <label class="q">아들인가요, 딸인가요?</label>
+      <div class="chips" id="rec-gender">
+        <div class="chip on" data-v="공용">아직 몰라요</div>
+        <div class="chip" data-v="남">아들</div>
+        <div class="chip" data-v="여">딸</div>
+      </div>
+
+      <label class="q">태어난 날짜 (양력)</label>
+      <input type="date" id="rec-date">
+
+      <label class="q">태어난 시간 (시진)</label>
+      <div class="sijin" id="rec-sijin"></div>
+      <div class="jasi-note" id="rec-jasi">
+        <label><input type="checkbox" id="rec-jasi-late">자정(밤 12시)을 넘겨서 태어났어요</label>
+      </div>
+
+      <button class="go" id="rec-go">사주 보고 이름 받기</button>
+      <div class="err" id="rec-err"></div>
+    </div>
+    <div class="result" id="rec-result"></div>
+  </section>
+
+  <!-- ══ 이름 체크 ══════════════════════ -->
+  <section id="pane-chk" style="display:none">
+    <div class="paper">
+      <label class="q">아기 성(姓)</label>
+      <select id="chk-surname"></select>
+
+      <label class="q">지어 두신 이름 (두 글자)</label>
+      <div style="display:flex;gap:10px">
+        <select id="chk-c1" style="flex:1"></select>
+        <select id="chk-c2" style="flex:1"></select>
+      </div>
+      <small class="hint">찾으시는 한자가 목록에 없으면 아래에서 직접 적어 주세요.</small>
+
+      <div style="margin-top:12px">
+        <label style="font-size:17px;color:var(--ink-soft)"><input type="checkbox" id="chk-manual" style="width:auto;margin-right:6px;vertical-align:-2px">한자를 직접 적을게요</label>
+      </div>
+      <div id="chk-manual-box" style="display:none;margin-top:10px">
+        <div style="display:flex;gap:10px">
+          <input type="text" id="chk-m1" placeholder="첫 글자 (예: 서)" maxlength="1">
+          <input type="number" id="chk-m1s" placeholder="획수" min="1" max="40">
+        </div>
+        <div style="display:flex;gap:10px;margin-top:8px">
+          <input type="text" id="chk-m2" placeholder="둘째 글자 (예: 윤)" maxlength="1">
+          <input type="number" id="chk-m2s" placeholder="획수" min="1" max="40">
+        </div>
+        <small class="hint">획수는 한자의 원획(原劃) 기준이에요. 모르시면 목록에서 고르시는 편이 정확합니다.</small>
+      </div>
+
+      <label class="q">아들인가요, 딸인가요?</label>
+      <div class="chips" id="chk-gender">
+        <div class="chip on" data-v="공용">아직 몰라요</div>
+        <div class="chip" data-v="남">아들</div>
+        <div class="chip" data-v="여">딸</div>
+      </div>
+
+      <label class="q">태어난 날짜 (양력)</label>
+      <input type="date" id="chk-date">
+
+      <label class="q">태어난 시간 (시진)</label>
+      <div class="sijin" id="chk-sijin"></div>
+      <div class="jasi-note" id="chk-jasi">
+        <label><input type="checkbox" id="chk-jasi-late">자정(밤 12시)을 넘겨서 태어났어요</label>
+      </div>
+
+      <button class="go" id="chk-go">이 이름, 어떤지 봐 주세요</button>
+      <div class="err" id="chk-err"></div>
+    </div>
+    <div class="result" id="chk-result"></div>
+  </section>
+</div>
+
+<footer>
+  <b>미리 말씀드릴 것들</b>
+  <ul>
+    <li>절기는 해마다 시각이 조금씩 달라, 널리 쓰이는 근사 날짜로 잡았습니다 (하루 정도 차이가 날 수 있어요).</li>
+    <li>부족한 오행은 여덟 글자의 기운을 세어 보는 간이 방식입니다. 일간의 강약·조후까지 보는 정식 용신론은 아닙니다.</li>
+    <li>발음오행은 이름 첫소리(초성)를 기준으로 맞춰 보았습니다.</li>
+    <li>81수리 길흉은 유파마다 풀이가 조금씩 다릅니다. 널리 통하는 길수만 분명히 표시하고 나머지는 '보통'으로 두었어요.</li>
+    <li>성씨 획수는 그 성에서 가장 많이 쓰는 한자 기준입니다.</li>
+    <li>태어난 시를 모르시면 시주를 빼고 여섯 글자로만 봅니다.</li>
+    <li>이름은 결국 부모님 마음이 제일 중요합니다. 여기 풀이는 곁들이는 이야기로 삼아 주세요.</li>
+  </ul>
+  <div class="sign">— 오아 작명원 —</div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ① 데 이 터
+   ═══════════════════════════════════════════════════════ */
+
+var STEMS   = ['갑','을','병','정','무','기','경','신','임','계'];
+var STEMS_H = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+var STEM_EL = ['목','목','화','화','토','토','금','금','수','수'];
+
+var BRANCHES   = ['자','축','인','묘','진','사','오','미','신','유','술','해'];
+var BRANCHES_H = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+var BRANCH_EL  = ['수','토','목','목','토','화','화','토','금','금','토','수'];
+
+var ELEMENTS = ['목','화','토','금','수'];
+var EL_HANJA = {목:'木',화:'火',토:'土',금:'金',수:'水'};
+var EL_WORD  = {목:'나무',화:'불',토:'흙',금:'쇠',수:'물'};
+// 상생: 목→화→토→금→수→목
+var EL_GEN = {목:'화',화:'토',토:'금',금:'수',수:'목'};
+
+// 12절기 경계 (근사 고정일). [월, 일, 지지index]
+var TERMS = [
+  [1, 6, 1],  // 소한 → 축월
+  [2, 4, 2],  // 입춘 → 인월 (사주 새해)
+  [3, 6, 3],  // 경칩 → 묘월
+  [4, 5, 4],  // 청명 → 진월
+  [5, 6, 5],  // 입하 → 사월
+  [6, 6, 6],  // 망종 → 오월
+  [7, 7, 7],  // 소서 → 미월
+  [8, 8, 8],  // 입추 → 신월
+  [9, 8, 9],  // 백로 → 유월
+  [10,8, 10], // 한로 → 술월
+  [11,7, 11], // 입동 → 해월
+  [12,7, 0]   // 대설 → 자월
+];
+
+// 오호둔년법: 연간 index → 인월(寅月)의 천간 index
+var MONTH_STEM_START = [2,4,6,8,0,2,4,6,8,0]; // 갑=병, 을=무, 병=경, 정=임, 무=갑, 기=병 ...
+// 오자둔시법: 일간 index → 자시(子時)의 천간 index
+var HOUR_STEM_START  = [0,2,4,6,8,0,2,4,6,8]; // 갑=갑, 을=병, 병=무, 정=경, 무=임, 기=갑 ...
+
+// 초성 19자 순서 → 발음오행
+var CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+var CHO_EL = {
+  'ㄱ':'목','ㄲ':'목','ㅋ':'목',
+  'ㄴ':'화','ㄷ':'화','ㄸ':'화','ㄹ':'화','ㅌ':'화',
+  'ㅇ':'토','ㅎ':'토',
+  'ㅅ':'금','ㅆ':'금','ㅈ':'금','ㅉ':'금','ㅊ':'금',
+  'ㅁ':'수','ㅂ':'수','ㅃ':'수','ㅍ':'수'
+};
+
+// 12시진
+var SIJIN = [
+  {b:0,  name:'자시', range:'밤 11시~1시',  hour:23},
+  {b:1,  name:'축시', range:'새벽 1~3시',   hour:1},
+  {b:2,  name:'인시', range:'새벽 3~5시',   hour:3},
+  {b:3,  name:'묘시', range:'아침 5~7시',   hour:5},
+  {b:4,  name:'진시', range:'아침 7~9시',   hour:7},
+  {b:5,  name:'사시', range:'오전 9~11시',  hour:9},
+  {b:6,  name:'오시', range:'낮 11~1시',    hour:11},
+  {b:7,  name:'미시', range:'낮 1~3시',     hour:13},
+  {b:8,  name:'신시', range:'낮 3~5시',     hour:15},
+  {b:9,  name:'유시', range:'저녁 5~7시',   hour:17},
+  {b:10, name:'술시', range:'저녁 7~9시',   hour:19},
+  {b:11, name:'해시', range:'밤 9~11시',    hour:21}
+];
+
+// 성씨 대표 한자 + 원획 획수
+var SURNAMES = [
+  {k:'김',h:'金',s:8},  {k:'이',h:'李',s:7},  {k:'박',h:'朴',s:6},
+  {k:'최',h:'崔',s:11}, {k:'정',h:'鄭',s:19}, {k:'강',h:'姜',s:9},
+  {k:'조',h:'趙',s:14}, {k:'윤',h:'尹',s:4},  {k:'장',h:'張',s:11},
+  {k:'임',h:'林',s:8},  {k:'한',h:'韓',s:17}, {k:'오',h:'吳',s:7},
+  {k:'서',h:'徐',s:10}, {k:'신',h:'申',s:5},  {k:'권',h:'權',s:22},
+  {k:'황',h:'黃',s:12}, {k:'안',h:'安',s:6},  {k:'송',h:'宋',s:7},
+  {k:'유',h:'柳',s:9},  {k:'홍',h:'洪',s:10}, {k:'전',h:'全',s:6},
+  {k:'고',h:'高',s:10}, {k:'문',h:'文',s:4},  {k:'양',h:'梁',s:11},
+  {k:'손',h:'孫',s:10}, {k:'배',h:'裵',s:14}, {k:'백',h:'白',s:5},
+  {k:'허',h:'許',s:11}, {k:'남',h:'南',s:9},  {k:'심',h:'沈',s:8}
+];
+
+// 81수리 — 널리 통하는 길수
+var SURI_GOOD = [1,3,5,6,7,8,11,13,15,16,17,18,21,23,24,25,29,31,32,33,35,37,38,39,
+                 41,45,47,48,51,52,57,58,61,63,65,67,68,73,75,81];
+// 흉수: 14는 확실하고, 나머지는 통용되는 참고값 (유파에 따라 다름 — 출처 재검증 권장)
+var SURI_BAD  = [2,4,9,10,12,14,19,20,22,28,34,36,40,44,46,50,54,56,60,64,66,70,72,74,76,80];
+
+var SURI_WORD = {
+  '길':'뻗어 나가는 기운이 담긴 수예요.',
+  '보통':'모나지 않고 무난한 수예요.',
+  '흉':'조금 굽이치는 기운이 있는 수예요.'
+};
+
+/* 이름 소리의 자연스러움 — 획수와 오행만 맞추면 실제로는 잘 쓰지 않는 이름이 올라옵니다.
+   요즘 우리말 이름에서 그 자리에 잘 앉지 않는 소리를 추려 두었습니다. */
+var HEAD_AWKWARD = ['곡','귀','금','록','림','무','묘','복','봉','부','사','숙','순','충','표','풍','필',
+                    '의','매','란','려','량','두','녕','견','결','개','군','균','광','탁','백','설','종','언','애','요','만',
+                    '모','평','추','귀','필','부','충','방','박','배','범','병'];
+var TAIL_AWKWARD = ['곡','귀','금','두','록','림','만','매','묘','무','박','방','배','백','복','부','사',
+                    '초','충','탁','표','풍','평','의','개','군','녕','란','묘','숙','자','조'];
+// 요즘 이름에 많이 오르는 소리
+var FAVORED = ['서','준','지','하','은','민','예','유','윤','주','현','우','아','연','진','도','소','시',
+               '재','성','채','태','원','규','건','호','인','영','수','승','선','세','온','찬','정','희','상','신'];
+
+/* 이름 한자 사전
+   {h:한자, k:한글, m:훈음, s:원획 획수, g:'남'|'여'|'공용'}
+   발음오행과 초성은 k에서 그때그때 계산합니다. */
+var HANJA = [
+/* ── 목 (ㄱ·ㅋ) ── */
+{h:'佳',k:'가',m:'아름다울 가',s:8,g:'여'},
+{h:'嘉',k:'가',m:'아름다울 가',s:14,g:'공용'},
+{h:'康',k:'강',m:'편안할 강',s:11,g:'남'},
+{h:'强',k:'강',m:'굳셀 강',s:11,g:'남'},
+{h:'開',k:'개',m:'열 개',s:12,g:'남'},
+{h:'建',k:'건',m:'세울 건',s:9,g:'남'},
+{h:'健',k:'건',m:'굳셀 건',s:11,g:'남'},
+{h:'見',k:'견',m:'볼 견',s:7,g:'남'},
+{h:'潔',k:'결',m:'깨끗할 결',s:16,g:'여'},
+{h:'京',k:'경',m:'서울 경',s:8,g:'공용'},
+{h:'敬',k:'경',m:'공경할 경',s:13,g:'공용'},
+{h:'慶',k:'경',m:'경사 경',s:15,g:'공용'},
+{h:'卿',k:'경',m:'벼슬 경',s:12,g:'남'},
+{h:'谷',k:'곡',m:'골짜기 곡',s:7,g:'남'},
+{h:'高',k:'고',m:'높을 고',s:10,g:'남'},
+{h:'光',k:'광',m:'빛 광',s:6,g:'남'},
+{h:'廣',k:'광',m:'넓을 광',s:15,g:'남'},
+{h:'求',k:'구',m:'구할 구',s:7,g:'남'},
+{h:'君',k:'군',m:'임금 군',s:7,g:'공용'},
+{h:'均',k:'균',m:'고를 균',s:7,g:'남'},
+{h:'圭',k:'규',m:'서옥 규',s:6,g:'남'},
+{h:'奎',k:'규',m:'별 규',s:9,g:'남'},
+{h:'貴',k:'귀',m:'귀할 귀',s:12,g:'여'},
+{h:'根',k:'근',m:'뿌리 근',s:10,g:'남'},
+{h:'錦',k:'금',m:'비단 금',s:16,g:'여'},
+{h:'基',k:'기',m:'터 기',s:11,g:'남'},
+{h:'起',k:'기',m:'일어날 기',s:10,g:'남'},
+{h:'琦',k:'기',m:'옥 기',s:13,g:'공용'},
+{h:'綺',k:'기',m:'비단 기',s:14,g:'여'},
+
+/* ── 화 (ㄴ·ㄷ·ㄹ·ㅌ) ── */
+{h:'娜',k:'나',m:'아리따울 나',s:10,g:'여'},
+{h:'南',k:'남',m:'남녘 남',s:9,g:'남'},
+{h:'寧',k:'녕',m:'편안할 녕',s:14,g:'여'},
+{h:'丹',k:'단',m:'붉을 단',s:4,g:'여'},
+{h:'端',k:'단',m:'바를 단',s:14,g:'공용'},
+{h:'大',k:'대',m:'큰 대',s:3,g:'남'},
+{h:'德',k:'덕',m:'큰 덕',s:15,g:'남'},
+{h:'度',k:'도',m:'법도 도',s:9,g:'남'},
+{h:'道',k:'도',m:'길 도',s:16,g:'남'},
+{h:'燾',k:'도',m:'비칠 도',s:18,g:'공용'},
+{h:'東',k:'동',m:'동녘 동',s:8,g:'남'},
+{h:'桐',k:'동',m:'오동나무 동',s:10,g:'공용'},
+{h:'斗',k:'두',m:'말 두',s:4,g:'남'},
+{h:'蘭',k:'란',m:'난초 란',s:23,g:'여'},
+{h:'來',k:'래',m:'올 래',s:8,g:'공용'},
+{h:'良',k:'량',m:'어질 량',s:7,g:'남'},
+{h:'亮',k:'량',m:'밝을 량',s:9,g:'남'},
+{h:'麗',k:'려',m:'고울 려',s:19,g:'여'},
+{h:'綠',k:'록',m:'푸를 록',s:14,g:'여'},
+{h:'利',k:'리',m:'이로울 리',s:7,g:'남'},
+{h:'理',k:'리',m:'다스릴 리',s:12,g:'공용'},
+{h:'麟',k:'린',m:'기린 린',s:23,g:'남'},
+{h:'林',k:'림',m:'수풀 림',s:8,g:'공용'},
+{h:'太',k:'태',m:'클 태',s:4,g:'남'},
+{h:'泰',k:'태',m:'클 태',s:10,g:'남'},
+{h:'卓',k:'탁',m:'높을 탁',s:8,g:'남'},
+
+/* ── 토 (ㅇ·ㅎ) ── */
+{h:'雅',k:'아',m:'우아할 아',s:12,g:'여'},
+{h:'娥',k:'아',m:'예쁠 아',s:10,g:'여'},
+{h:'安',k:'안',m:'편안할 안',s:6,g:'공용'},
+{h:'愛',k:'애',m:'사랑 애',s:13,g:'여'},
+{h:'陽',k:'양',m:'볕 양',s:17,g:'남'},
+{h:'洋',k:'양',m:'큰바다 양',s:10,g:'남'},
+{h:'彦',k:'언',m:'선비 언',s:9,g:'남'},
+{h:'淵',k:'연',m:'못 연',s:12,g:'남'},
+{h:'妍',k:'연',m:'고울 연',s:9,g:'여'},
+{h:'英',k:'영',m:'꽃부리 영',s:11,g:'공용'},
+{h:'榮',k:'영',m:'영화로울 영',s:14,g:'공용'},
+{h:'永',k:'영',m:'길 영',s:5,g:'공용'},
+{h:'泳',k:'영',m:'헤엄칠 영',s:9,g:'남'},
+{h:'睿',k:'예',m:'슬기로울 예',s:14,g:'공용'},
+{h:'藝',k:'예',m:'재주 예',s:21,g:'여'},
+{h:'溫',k:'온',m:'따뜻할 온',s:14,g:'공용'},
+{h:'瑤',k:'요',m:'아름다운옥 요',s:15,g:'여'},
+{h:'勇',k:'용',m:'날랠 용',s:9,g:'남'},
+{h:'龍',k:'용',m:'용 용',s:16,g:'남'},
+{h:'宇',k:'우',m:'집 우',s:6,g:'남'},
+{h:'祐',k:'우',m:'복 우',s:10,g:'남'},
+{h:'雨',k:'우',m:'비 우',s:8,g:'여'},
+{h:'元',k:'원',m:'으뜸 원',s:4,g:'남'},
+{h:'源',k:'원',m:'근원 원',s:14,g:'남'},
+{h:'裕',k:'유',m:'넉넉할 유',s:13,g:'공용'},
+{h:'柔',k:'유',m:'부드러울 유',s:9,g:'여'},
+{h:'允',k:'윤',m:'진실로 윤',s:4,g:'공용'},
+{h:'潤',k:'윤',m:'윤택할 윤',s:16,g:'공용'},
+{h:'恩',k:'은',m:'은혜 은',s:10,g:'여'},
+{h:'銀',k:'은',m:'은 은',s:14,g:'여'},
+{h:'義',k:'의',m:'옳을 의',s:13,g:'남'},
+{h:'仁',k:'인',m:'어질 인',s:4,g:'공용'},
+{h:'河',k:'하',m:'물 하',s:9,g:'공용'},
+{h:'夏',k:'하',m:'여름 하',s:10,g:'공용'},
+{h:'賢',k:'현',m:'어질 현',s:15,g:'공용'},
+{h:'炫',k:'현',m:'밝을 현',s:9,g:'남'},
+{h:'玄',k:'현',m:'검을 현',s:5,g:'남'},
+{h:'亨',k:'형',m:'형통할 형',s:7,g:'남'},
+{h:'惠',k:'혜',m:'은혜 혜',s:12,g:'여'},
+{h:'慧',k:'혜',m:'슬기로울 혜',s:15,g:'여'},
+{h:'浩',k:'호',m:'넓을 호',s:11,g:'남'},
+{h:'皓',k:'호',m:'흴 호',s:12,g:'남'},
+{h:'弘',k:'홍',m:'클 홍',s:5,g:'남'},
+{h:'和',k:'화',m:'화할 화',s:8,g:'공용'},
+{h:'華',k:'화',m:'빛날 화',s:14,g:'여'},
+{h:'煥',k:'환',m:'빛날 환',s:13,g:'남'},
+{h:'孝',k:'효',m:'효도 효',s:7,g:'공용'},
+{h:'曉',k:'효',m:'새벽 효',s:16,g:'여'},
+{h:'熙',k:'희',m:'빛날 희',s:13,g:'공용'},
+{h:'喜',k:'희',m:'기쁠 희',s:12,g:'여'},
+
+/* ── 금 (ㅅ·ㅈ·ㅊ) ── */
+{h:'思',k:'사',m:'생각할 사',s:9,g:'여'},
+{h:'尙',k:'상',m:'높일 상',s:8,g:'남'},
+{h:'相',k:'상',m:'서로 상',s:9,g:'남'},
+{h:'瑞',k:'서',m:'상서로울 서',s:14,g:'공용'},
+{h:'書',k:'서',m:'글 서',s:10,g:'공용'},
+{h:'敍',k:'서',m:'펼 서',s:11,g:'남'},
+{h:'錫',k:'석',m:'주석 석',s:16,g:'남'},
+{h:'碩',k:'석',m:'클 석',s:14,g:'남'},
+{h:'宣',k:'선',m:'베풀 선',s:9,g:'공용'},
+{h:'善',k:'선',m:'착할 선',s:12,g:'공용'},
+{h:'雪',k:'설',m:'눈 설',s:11,g:'여'},
+{h:'星',k:'성',m:'별 성',s:9,g:'공용'},
+{h:'成',k:'성',m:'이룰 성',s:7,g:'남'},
+{h:'聖',k:'성',m:'성스러울 성',s:13,g:'남'},
+{h:'誠',k:'성',m:'정성 성',s:14,g:'공용'},
+{h:'世',k:'세',m:'인간 세',s:5,g:'공용'},
+{h:'昭',k:'소',m:'밝을 소',s:9,g:'여'},
+{h:'素',k:'소',m:'흴 소',s:10,g:'여'},
+{h:'松',k:'송',m:'소나무 송',s:8,g:'남'},
+{h:'秀',k:'수',m:'빼어날 수',s:7,g:'공용'},
+{h:'洙',k:'수',m:'물가 수',s:10,g:'남'},
+{h:'淑',k:'숙',m:'맑을 숙',s:12,g:'여'},
+{h:'純',k:'순',m:'순수할 순',s:10,g:'공용'},
+{h:'舜',k:'순',m:'순임금 순',s:12,g:'남'},
+{h:'承',k:'승',m:'이을 승',s:8,g:'남'},
+{h:'昇',k:'승',m:'오를 승',s:8,g:'남'},
+{h:'時',k:'시',m:'때 시',s:10,g:'공용'},
+{h:'信',k:'신',m:'믿을 신',s:9,g:'남'},
+{h:'新',k:'신',m:'새로울 신',s:13,g:'공용'},
+{h:'慈',k:'자',m:'사랑 자',s:13,g:'여'},
+{h:'在',k:'재',m:'있을 재',s:6,g:'남'},
+{h:'宰',k:'재',m:'재상 재',s:10,g:'남'},
+{h:'正',k:'정',m:'바를 정',s:5,g:'공용'},
+{h:'貞',k:'정',m:'곧을 정',s:9,g:'여'},
+{h:'廷',k:'정',m:'조정 정',s:7,g:'남'},
+{h:'靜',k:'정',m:'고요할 정',s:16,g:'여'},
+{h:'濟',k:'제',m:'건널 제',s:18,g:'남'},
+{h:'朝',k:'조',m:'아침 조',s:12,g:'남'},
+{h:'鍾',k:'종',m:'쇠북 종',s:17,g:'남'},
+{h:'周',k:'주',m:'두루 주',s:8,g:'공용'},
+{h:'珠',k:'주',m:'구슬 주',s:11,g:'여'},
+{h:'俊',k:'준',m:'준걸 준',s:9,g:'남'},
+{h:'峻',k:'준',m:'높을 준',s:10,g:'남'},
+{h:'準',k:'준',m:'법도 준',s:14,g:'남'},
+{h:'志',k:'지',m:'뜻 지',s:7,g:'남'},
+{h:'智',k:'지',m:'지혜 지',s:12,g:'공용'},
+{h:'芝',k:'지',m:'지초 지',s:10,g:'여'},
+{h:'珍',k:'진',m:'보배 진',s:10,g:'여'},
+{h:'眞',k:'진',m:'참 진',s:10,g:'공용'},
+{h:'進',k:'진',m:'나아갈 진',s:15,g:'남'},
+{h:'燦',k:'찬',m:'빛날 찬',s:17,g:'남'},
+{h:'贊',k:'찬',m:'도울 찬',s:19,g:'남'},
+{h:'昌',k:'창',m:'창성할 창',s:8,g:'남'},
+{h:'彩',k:'채',m:'채색 채',s:11,g:'여'},
+{h:'采',k:'채',m:'캘 채',s:8,g:'여'},
+{h:'天',k:'천',m:'하늘 천',s:4,g:'공용'},
+{h:'千',k:'천',m:'일천 천',s:3,g:'여'},
+{h:'哲',k:'철',m:'밝을 철',s:10,g:'남'},
+{h:'淸',k:'청',m:'맑을 청',s:12,g:'공용'},
+{h:'秋',k:'추',m:'가을 추',s:9,g:'여'},
+{h:'春',k:'춘',m:'봄 춘',s:9,g:'공용'},
+{h:'忠',k:'충',m:'충성 충',s:8,g:'남'},
+
+/* ── 수 (ㅁ·ㅂ·ㅍ) ── */
+{h:'萬',k:'만',m:'일만 만',s:15,g:'남'},
+{h:'梅',k:'매',m:'매화 매',s:11,g:'여'},
+{h:'明',k:'명',m:'밝을 명',s:8,g:'공용'},
+{h:'銘',k:'명',m:'새길 명',s:14,g:'남'},
+{h:'慕',k:'모',m:'그리워할 모',s:15,g:'여'},
+{h:'妙',k:'묘',m:'묘할 묘',s:7,g:'여'},
+{h:'苗',k:'묘',m:'싹 묘',s:11,g:'여'},
+{h:'茂',k:'무',m:'무성할 무',s:11,g:'남'},
+{h:'武',k:'무',m:'굳셀 무',s:8,g:'남'},
+{h:'文',k:'문',m:'글월 문',s:4,g:'공용'},
+{h:'美',k:'미',m:'아름다울 미',s:9,g:'여'},
+{h:'民',k:'민',m:'백성 민',s:5,g:'남'},
+{h:'敏',k:'민',m:'민첩할 민',s:11,g:'공용'},
+{h:'珉',k:'민',m:'옥돌 민',s:10,g:'공용'},
+{h:'旼',k:'민',m:'화할 민',s:8,g:'공용'},
+{h:'博',k:'박',m:'넓을 박',s:12,g:'남'},
+{h:'邦',k:'방',m:'나라 방',s:11,g:'남'},
+{h:'芳',k:'방',m:'꽃다울 방',s:10,g:'여'},
+{h:'培',k:'배',m:'북돋울 배',s:11,g:'남'},
+{h:'白',k:'백',m:'흴 백',s:5,g:'공용'},
+{h:'凡',k:'범',m:'무릇 범',s:3,g:'남'},
+{h:'範',k:'범',m:'법 범',s:15,g:'남'},
+{h:'炳',k:'병',m:'밝을 병',s:9,g:'남'},
+{h:'秉',k:'병',m:'잡을 병',s:8,g:'남'},
+{h:'保',k:'보',m:'지킬 보',s:9,g:'남'},
+{h:'甫',k:'보',m:'클 보',s:7,g:'남'},
+{h:'寶',k:'보',m:'보배 보',s:20,g:'여'},
+{h:'福',k:'복',m:'복 복',s:14,g:'공용'},
+{h:'鳳',k:'봉',m:'봉새 봉',s:14,g:'남'},
+{h:'富',k:'부',m:'부유할 부',s:12,g:'남'},
+{h:'彬',k:'빈',m:'빛날 빈',s:11,g:'공용'},
+{h:'斌',k:'빈',m:'빛날 빈',s:12,g:'남'},
+{h:'平',k:'평',m:'평평할 평',s:5,g:'공용'},
+{h:'表',k:'표',m:'겉 표',s:8,g:'남'},
+{h:'豊',k:'풍',m:'풍년 풍',s:13,g:'남'},
+{h:'弼',k:'필',m:'도울 필',s:12,g:'남'}
+];
+
+/* ═══════════════════════════════════════════════════════
+   ② 사 주 계 산
+   ═══════════════════════════════════════════════════════ */
+
+function mod(n,m){ return ((n % m) + m) % m; }
+
+// 두 날짜 사이의 일수 (UTC 자정 기준으로만 계산)
+function daysFromEpoch(y,m,d){
+  var MS = 86400000;
+  return Math.round((Date.UTC(y, m-1, d) - Date.UTC(2000,0,1)) / MS);
+}
+
+// 2000-01-01 = 무오일 (60갑자 index 54)
+var DAY_EPOCH_INDEX = 54;
+
+// (y,m,d)가 그 해 절기 기준으로 몇 번째 월지에 속하는가 + 사주 연도
+function solarTermInfo(y,m,d){
+  // 입춘(2/4) 이전이면 사주 연도는 전년
+  var beforeIpchun = (m < 2) || (m === 2 && d < 4);
+  var sajuYear = beforeIpchun ? y - 1 : y;
+
+  // 가장 최근에 지난 절기 찾기
+  var branch = 0; // 못 찾으면 자월(1/1~1/5 = 전년 대설 구간)
+  for (var i = 0; i < TERMS.length; i++){
+    var t = TERMS[i];
+    if (m > t[0] || (m === t[0] && d >= t[1])) branch = t[2];
+  }
+  return {sajuYear: sajuYear, monthBranch: branch};
+}
+
+/**
+ * 사주팔자를 뽑습니다.
+ * @param y,m,d  양력 생년월일
+ * @param hour   0~23 (시를 모르면 null)
+ */
+function getSaju(y, m, d, hour){
+  // 자시(23시~)는 사주에서 다음 날로 넘어갑니다
+  var dy = y, dm = m, dd = d;
+  if (hour !== null && hour >= 23){
+    var nx = new Date(Date.UTC(y, m-1, d + 1));
+    dy = nx.getUTCFullYear(); dm = nx.getUTCMonth()+1; dd = nx.getUTCDate();
+  }
+
+  // 연주 / 월지 — 날짜가 넘어간 뒤 기준으로 봅니다
+  var info = solarTermInfo(dy, dm, dd);
+  var yStem   = mod(info.sajuYear - 4, 10);
+  var yBranch = mod(info.sajuYear - 4, 12);
+
+  // 월주 — 오호둔년법
+  var mBranch = info.monthBranch;
+  var mStem   = mod(MONTH_STEM_START[yStem] + mod(mBranch - 2, 12), 10);
+
+  // 일주
+  var dayIdx  = mod(DAY_EPOCH_INDEX + daysFromEpoch(dy, dm, dd), 60);
+  var dStem   = dayIdx % 10;
+  var dBranch = dayIdx % 12;
+
+  // 시주 — 오자둔시법
+  var hStem = null, hBranch = null;
+  if (hour !== null){
+    hBranch = Math.floor(mod(hour + 1, 24) / 2);
+    hStem   = mod(HOUR_STEM_START[dStem] + hBranch, 10);
+  }
+
+  return {
+    year:  {stem:yStem, branch:yBranch},
+    month: {stem:mStem, branch:mBranch},
+    day:   {stem:dStem, branch:dBranch},
+    hour:  (hour === null ? null : {stem:hStem, branch:hBranch}),
+    sajuYear: info.sajuYear
+  };
+}
+
+// 여덟 글자(또는 여섯 글자)의 오행을 세어 봅니다
+function tallyElements(saju){
+  var t = {목:0,화:0,토:0,금:0,수:0};
+  var ps = [saju.year, saju.month, saju.day];
+  if (saju.hour) ps.push(saju.hour);
+  ps.forEach(function(p){
+    t[STEM_EL[p.stem]]++;
+    t[BRANCH_EL[p.branch]]++;
+  });
+  return t;
+}
+
+// 부족한 오행 (간이 판단) — 가장 적은 것부터 최대 2개
+function findLacking(tally){
+  var min = Math.min.apply(null, ELEMENTS.map(function(e){ return tally[e]; }));
+  var lack = ELEMENTS.filter(function(e){ return tally[e] === min; });
+  return lack.slice(0, 2);
+}
+
+/* ═══════════════════════════════════════════════════════
+   ③ 발음오행 · 수리성명학
+   ═══════════════════════════════════════════════════════ */
+
+// 한글 한 글자의 초성 → 발음오행
+function soundElement(ch){
+  var code = ch.charCodeAt(0) - 0xAC00;
+  if (code < 0 || code > 11171) return null;
+  return CHO_EL[CHO[Math.floor(code / 588)]];
+}
+
+// 81 넘으면 81을 빼서 되돌립니다 (유파에 따라 80을 빼기도 합니다)
+function wrap81(n){ return n > 81 ? ((n - 1) % 81) + 1 : n; }
+
+function suriGrade(n){
+  n = wrap81(n);
+  if (SURI_GOOD.indexOf(n) >= 0) return '길';
+  if (SURI_BAD.indexOf(n)  >= 0) return '흉';
+  return '보통';
+}
+
+// 원형이정 4격
+function fourGyeok(surS, aS, bS){
+  var g = [
+    {name:'원격', sub:'초년운', n: wrap81(aS + bS)},
+    {name:'형격', sub:'청년운', n: wrap81(surS + aS)},
+    {name:'이격', sub:'장년운', n: wrap81(surS + bS)},
+    {name:'정격', sub:'평생운', n: wrap81(surS + aS + bS)}
+  ];
+  g.forEach(function(x){ x.grade = suriGrade(x.n); });
+  return g;
+}
+
+// 점수 가중치 (여기만 고치면 성향이 바뀝니다)
+var W = { 길:2, 보통:0, 흉:-2.5, 오행적중:2.2, 오행상생:1.0, 소리다양:0.6 };
+
+function scoreName(surS, c1, c2, need){
+  var gyeok = fourGyeok(surS, c1.s, c2.s);
+  var score = 0;
+  gyeok.forEach(function(g){ score += W[g.grade]; });
+
+  var e1 = soundElement(c1.k), e2 = soundElement(c2.k);
+  var hit = 0;
+  [e1, e2].forEach(function(e){
+    if (need.indexOf(e) >= 0) { score += W.오행적중; hit++; }
+    else if (need.some(function(n){ return EL_GEN[e] === n; })) score += W.오행상생;
+  });
+  if (e1 !== e2) score += W.소리다양;
+
+  return {gyeok:gyeok, score:score, e1:e1, e2:e2, hit:hit};
+}
+
+/* ═══════════════════════════════════════════════════════
+   ④ 이 름 추 천
+   ═══════════════════════════════════════════════════════ */
+
+// 소리가 얼마나 이름다운가 (추천할 때만 씁니다 — 이미 지으신 이름을 깎지는 않습니다)
+var W_NAT = { 자리어색:-4, 익은소리:1.3, 둘다익음:0.8 };
+function naturalness(a, b){
+  var n = 0;
+  if (HEAD_AWKWARD.indexOf(a.k) >= 0) n += W_NAT.자리어색;
+  if (TAIL_AWKWARD.indexOf(b.k) >= 0) n += W_NAT.자리어색;
+  var f1 = FAVORED.indexOf(a.k) >= 0, f2 = FAVORED.indexOf(b.k) >= 0;
+  if (f1) n += W_NAT.익은소리;
+  if (f2) n += W_NAT.익은소리;
+  if (f1 && f2) n += W_NAT.둘다익음;
+  return n;
+}
+
+function pickCandidates(gender, need){
+  var byGender = HANJA.filter(function(c){
+    return gender === '공용' ? true : (c.g === gender || c.g === '공용');
+  });
+  // 필요 오행에 바로 맞는 글자를 우선, 상생하는 글자까지 넓힙니다
+  var direct = byGender.filter(function(c){ return need.indexOf(soundElement(c.k)) >= 0; });
+  var helper = byGender.filter(function(c){
+    var e = soundElement(c.k);
+    return need.indexOf(e) < 0 && need.some(function(n){ return EL_GEN[e] === n; });
+  });
+  return {direct: direct, pool: direct.concat(helper)};
+}
+
+function recommendNames(surname, gender, need, exclude, limit){
+  var cand = pickCandidates(gender, need);
+  var first = cand.direct.length >= 6 ? cand.direct : cand.pool;
+  var second = cand.pool;
+  var out = [];
+
+  for (var i = 0; i < first.length; i++){
+    for (var j = 0; j < second.length; j++){
+      var a = first[i], b = second[j];
+      if (a.h === b.h || a.k === b.k) continue;
+      var full = a.k + b.k;
+      if (exclude && exclude === full) continue;
+      if (full === surname.k + a.k) continue;              // 성과 겹치는 소리 피하기
+      if (a.k === surname.k || b.k === surname.k) continue;
+      var r = scoreName(surname.s, a, b, need);
+      out.push({c1:a, c2:b, kr:full, hj:a.h + b.h, r:r, rank: r.score + naturalness(a, b)});
+    }
+  }
+
+  out.sort(function(x,y){ return y.rank - x.rank; });
+
+  // 같은 소리 이름은 하나만, 같은 글자가 너무 반복되지 않게
+  var seen = {}, useCount = {}, picked = [];
+  for (var k = 0; k < out.length && picked.length < limit; k++){
+    var o = out[k];
+    if (seen[o.kr]) continue;
+    var u1 = useCount[o.c1.k] || 0, u2 = useCount[o.c2.k] || 0;
+    if (u1 >= 2 || u2 >= 2) continue;
+    seen[o.kr] = 1;
+    useCount[o.c1.k] = u1 + 1;
+    useCount[o.c2.k] = u2 + 1;
+    picked.push(o);
+  }
+  return picked;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ⑤ 이 름 체 크
+   ═══════════════════════════════════════════════════════ */
+
+var VERDICTS = [
+  {min: 12,   big:'아주 좋습니다',      line:'사주에 모자란 기운을 이름이 잘 채워 주고, 획수의 흐름도 순합니다. 마음 놓고 부르셔도 좋겠어요.'},
+  {min: 6,    big:'좋은 이름입니다',    line:'큰 무리 없이 잘 어울립니다. 아쉬운 자리가 하나쯤 있어도 나머지가 넉넉히 받쳐 줍니다.'},
+  {min: 1,    big:'무난합니다',        line:'특별히 거스르는 데 없이 두루 무난한 이름이에요. 정이 붙은 이름이라면 그대로 쓰셔도 괜찮습니다.'},
+  {min: -4,   big:'조금 아쉽습니다',    line:'나쁘다기보다, 아기 사주가 바라는 기운과 이름이 서로 조금 비껴 있습니다. 한 글자만 바꿔도 달라질 수 있어요.'},
+  {min:-999,  big:'한 번 더 보실까요',  line:'획수와 소리가 함께 어긋난 자리가 있습니다. 뜻이 마음에 드신다면, 같은 소리에 다른 한자를 찾아보시는 것도 방법입니다.'}
+];
+
+function verdictOf(score){
+  for (var i = 0; i < VERDICTS.length; i++){
+    if (score >= VERDICTS[i].min) return VERDICTS[i];
+  }
+  return VERDICTS[VERDICTS.length - 1];
+}
+
+/* ═══════════════════════════════════════════════════════
+   ⑥ 화 면 그 리 기
+   ═══════════════════════════════════════════════════════ */
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+
+// 성씨 select 채우기
+[ 'rec-surname','chk-surname' ].forEach(function(id){
+  $(id).innerHTML = SURNAMES.map(function(s){
+    return '<option value="'+s.k+'">'+s.k+' ('+s.h+' · '+s.s+'획)</option>';
+  }).join('');
+});
+
+// 이름 한자 select 채우기 (인덱스가 어긋나지 않도록 정렬된 배열 하나만 씁니다)
+var HANJA_SORTED = HANJA.slice().sort(function(a,b){ return a.k.localeCompare(b.k,'ko'); });
+var hanjaOptions = HANJA_SORTED.map(function(c,i){
+  return '<option value="'+i+'">'+c.k+' '+c.h+' — '+c.m+' ('+c.s+'획)</option>';
+}).join('');
+$('chk-c1').innerHTML = hanjaOptions;
+$('chk-c2').innerHTML = hanjaOptions;
+// 처음 열었을 때 같은 글자 두 개가 잡혀 있지 않도록
+(function(){
+  function idxOf(k,h){ for (var i=0;i<HANJA_SORTED.length;i++){ if (HANJA_SORTED[i].k===k && HANJA_SORTED[i].h===h) return i; } return 0; }
+  $('chk-c1').value = idxOf('서','瑞');
+  $('chk-c2').value = idxOf('준','俊');
+})();
+
+// 시진 버튼 만들기
+function buildSijin(gridId, noteId){
+  var g = $(gridId);
+  g.innerHTML = SIJIN.map(function(s){
+    return '<div class="chip" data-b="'+s.b+'"><b>'+s.name+'</b><small>'+s.range+'</small></div>';
+  }).join('') + '<div class="chip wide" data-b="none"><b>시간을 몰라요</b><small>시주를 빼고 여섯 글자로 봅니다</small></div>';
+
+  g.addEventListener('click', function(e){
+    var chip = e.target.closest('.chip');
+    if (!chip) return;
+    Array.prototype.forEach.call(g.children, function(c){ c.classList.remove('on'); });
+    chip.classList.add('on');
+    $(noteId).classList.toggle('show', chip.dataset.b === '0');
+  });
+}
+buildSijin('rec-sijin','rec-jasi');
+buildSijin('chk-sijin','chk-jasi');
+
+// 칩 그룹 (성별)
+['rec-gender','chk-gender'].forEach(function(id){
+  $(id).addEventListener('click', function(e){
+    var chip = e.target.closest('.chip'); if (!chip) return;
+    Array.prototype.forEach.call(this.children, function(c){ c.classList.remove('on'); });
+    chip.classList.add('on');
+  });
+});
+function chipValue(id){
+  var on = $(id).querySelector('.chip.on');
+  return on ? on.dataset.v : null;
+}
+
+// 탭
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('on'); });
+    t.classList.add('on');
+    $('pane-rec').style.display = t.dataset.tab === 'rec' ? '' : 'none';
+    $('pane-chk').style.display = t.dataset.tab === 'chk' ? '' : 'none';
+  });
+});
+
+// 직접 입력 토글
+$('chk-manual').addEventListener('change', function(){
+  $('chk-manual-box').style.display = this.checked ? 'block' : 'none';
+  $('chk-c1').disabled = this.checked;
+  $('chk-c2').disabled = this.checked;
+});
+
+// 폼에서 입력값 거두기
+function readForm(prefix){
+  var dateVal = $(prefix+'-date').value;
+  if (!dateVal) return {error:'태어난 날짜를 알려 주세요.'};
+  var parts = dateVal.split('-');
+  var y = +parts[0], m = +parts[1], d = +parts[2];
+  if (y < 1900 || y > 2100) return {error:'1900년에서 2100년 사이로 적어 주세요.'};
+
+  var sel = $(prefix+'-sijin').querySelector('.chip.on');
+  if (!sel) return {error:'태어난 시진을 골라 주세요. 모르시면 "시간을 몰라요"를 눌러 주세요.'};
+
+  var hour = null;
+  if (sel.dataset.b !== 'none'){
+    var b = +sel.dataset.b;
+    hour = SIJIN[b].hour;
+    // 자시인데 자정을 넘겼다면 23시가 아니라 0시
+    if (b === 0 && $(prefix+'-jasi-late').checked) hour = 0;
+  }
+
+  var sk = $(prefix+'-surname').value;
+  var surname = SURNAMES.filter(function(s){ return s.k === sk; })[0];
+
+  return {y:y, m:m, d:d, hour:hour, surname:surname, gender: chipValue(prefix+'-gender')};
+}
+
+// 사주 여덟 글자 그림
+function renderSaju(saju, tally, lack){
+  function cell(cap, p){
+    if (!p) return '<div class="pillar empty"><div class="cap">'+cap+'</div>'+
+      '<span class="gan">?</span><span class="ji">?</span><div class="kor">모름</div></div>';
+    var se = STEM_EL[p.stem], be = BRANCH_EL[p.branch];
+    return '<div class="pillar"><div class="cap">'+cap+'</div>'+
+      '<span class="gan el-'+se+'">'+STEMS_H[p.stem]+'</span>'+
+      '<span class="ji el-'+be+'">'+BRANCHES_H[p.branch]+'</span>'+
+      '<div class="kor">'+STEMS[p.stem]+BRANCHES[p.branch]+'</div></div>';
+  }
+  var grid = '<div class="saju-grid">'+
+    cell('연주', saju.year) + cell('월주', saju.month) +
+    cell('일주', saju.day)  + cell('시주', saju.hour) + '</div>';
+
+  var chips = '<div class="tally">' + ELEMENTS.map(function(e){
+    var isLack = lack.indexOf(e) >= 0;
+    return '<span class="'+(isLack?'lack':'')+'"><span class="el-'+e+'">'+EL_HANJA[e]+'</span> '+
+      e+' '+tally[e]+'</span>';
+  }).join('') + '</div>';
+
+  return grid + chips;
+}
+
+function lackSentence(lack, hasHour){
+  var names = lack.map(function(e){ return EL_WORD[e]+'('+EL_HANJA[e]+')'; }).join('과 ');
+  var base = '여덟 글자를 세어 보니 <b>'+names+'의 기운</b>이 가장 옅습니다. ';
+  if (!hasHour) base = '태어난 시를 몰라 여섯 글자만 세어 보았습니다. 그중 <b>'+names+'의 기운</b>이 가장 옅네요. ';
+  return base + '이름의 첫소리로 이 기운을 채워 드리면 좋겠습니다.';
+}
+
+function gyeokTable(gyeok){
+  return '<div class="gyeok">' + gyeok.map(function(g){
+    return '<div class="g-'+g.grade+'"><b>'+g.n+'</b>'+g.name+'<br><em>'+g.grade+'</em></div>';
+  }).join('') + '</div>';
+}
+
+function bujeok(o, surname, rank){
+  var tags = [];
+  if (o.r.e1) tags.push(o.c1.k+'='+EL_HANJA[o.r.e1]);
+  if (o.r.e2) tags.push(o.c2.k+'='+EL_HANJA[o.r.e2]);
+  return '<div class="bujeok">'+
+    (rank ? '<div class="rank">'+rank+'</div>' : '')+
+    '<div class="name-kr">'+surname.k+o.kr+'</div>'+
+    '<div class="name-hj">'+surname.h+o.hj+'</div>'+
+    '<div class="mean">'+esc(o.c1.m)+'<br>'+esc(o.c2.m)+'</div>'+
+    '<div class="tags">'+tags.join(' · ')+'</div>'+
+    '</div>';
+}
+
+/* ── 이름 추천 실행 ── */
+$('rec-go').addEventListener('click', function(){
+  var f = readForm('rec');
+  $('rec-err').textContent = '';
+  if (f.error){ $('rec-err').textContent = f.error; return; }
+
+  var saju  = getSaju(f.y, f.m, f.d, f.hour);
+  var tally = tallyElements(saju);
+  var lack  = findLacking(tally);
+  var names = recommendNames(f.surname, f.gender, lack, null, 8);
+
+  var html = '<div class="paper">'+
+    '<div class="seal-line"><div class="seal">사주<br>풀이</div>'+
+    '<div><h2>'+f.surname.k+'씨 아기의 사주</h2>'+
+    '<p>'+saju.sajuYear+'년 '+STEMS[saju.year.stem]+BRANCHES[saju.year.branch]+'년생 · '+
+    (f.hour===null ? '시간 모름' : '태어난 시 반영')+'</p></div></div>'+
+    renderSaju(saju, tally, lack)+
+    '<div class="say">'+lackSentence(lack, f.hour !== null)+'</div>'+
+    '<h3 class="sub">이런 이름은 어떠신가요</h3>'+
+    (names.length
+      ? '<div class="cards">'+names.map(function(o,i){ return bujeok(o, f.surname, i+1); }).join('')+'</div>'+
+        '<div class="say" style="border-left-color:var(--cheong)">맨 앞의 이름일수록 사주와 획수가 두루 잘 맞은 이름입니다. '+
+        '한자 아래 적힌 <b>'+EL_HANJA[lack[0]]+'</b> 같은 글자가, 아기에게 모자란 기운을 채워 주는 소리예요. '+
+        '마음에 드는 이름을 골라 다른 탭에서 자세히 풀어 보실 수도 있습니다.</div>'
+      : '<div class="say">마땅한 조합을 찾지 못했습니다. 성별을 "아직 몰라요"로 두고 다시 눌러 보시겠어요?</div>')+
+    '</div>';
+
+  var box = $('rec-result');
+  box.innerHTML = html;
+  box.classList.add('show');
+  box.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+/* ── 이름 체크 실행 ── */
+$('chk-go').addEventListener('click', function(){
+  var f = readForm('chk');
+  $('chk-err').textContent = '';
+  if (f.error){ $('chk-err').textContent = f.error; return; }
+
+  var c1, c2;
+  if ($('chk-manual').checked){
+    var k1 = $('chk-m1').value.trim(), k2 = $('chk-m2').value.trim();
+    var s1 = +$('chk-m1s').value, s2 = +$('chk-m2s').value;
+    if (!k1 || !k2 || !s1 || !s2){ $('chk-err').textContent = '두 글자와 획수를 모두 적어 주세요.'; return; }
+    if (!soundElement(k1) || !soundElement(k2)){ $('chk-err').textContent = '이름은 한글 한 글자씩 적어 주세요.'; return; }
+    c1 = {h:'', k:k1, m:'직접 적으신 글자', s:s1, g:'공용'};
+    c2 = {h:'', k:k2, m:'직접 적으신 글자', s:s2, g:'공용'};
+  } else {
+    c1 = HANJA_SORTED[+$('chk-c1').value];
+    c2 = HANJA_SORTED[+$('chk-c2').value];
+    if (c1.k === c2.k && c1.h === c2.h){ $('chk-err').textContent = '같은 글자 두 개네요. 둘째 글자를 다시 골라 주세요.'; return; }
+  }
+
+  var saju  = getSaju(f.y, f.m, f.d, f.hour);
+  var tally = tallyElements(saju);
+  var lack  = findLacking(tally);
+  var r     = scoreName(f.surname.s, c1, c2, lack);
+  var v     = verdictOf(r.score);
+  var fullK = f.surname.k + c1.k + c2.k;
+  // 한자를 직접 적으신 경우엔 한자가 비어 있으니 성 한자만 덩그러니 내걸지 않습니다
+  var fullH = (c1.h && c2.h) ? (f.surname.h + c1.h + c2.h) : (f.surname.h + ' ' + c1.k + c2.k);
+
+  // 소리 풀이 문장
+  var soundLine;
+  if (r.hit === 2)      soundLine = '<b>'+c1.k+'</b>과 <b>'+c2.k+'</b> 두 소리가 모두 모자란 기운을 곧장 채워 줍니다. 소리 자리는 아주 좋습니다.';
+  else if (r.hit === 1) soundLine = '두 글자 중 한 소리가 모자란 기운을 채워 주고 있습니다. 한쪽이 받쳐 주니 무난합니다.';
+  else                  soundLine = '두 소리 모두 모자란 기운과는 조금 떨어져 있습니다. 뜻이 좋은 이름이라면 크게 걱정하실 일은 아니지만, 아쉬운 자리이긴 합니다.';
+
+  var badG = r.gyeok.filter(function(g){ return g.grade === '흉'; });
+  var goodG = r.gyeok.filter(function(g){ return g.grade === '길'; });
+  var suriLine;
+  if (badG.length === 0 && goodG.length >= 3) suriLine = '획수로 잡은 네 자리(원형이정)가 <b>모두 순합니다</b>. 흔치 않게 곱게 떨어진 이름이에요.';
+  else if (badG.length === 0)                 suriLine = '획수 네 자리에 거스르는 수가 없습니다. 무난하게 흘러가는 이름입니다.';
+  else                                        suriLine = '<b>'+badG.map(function(g){return g.name+'('+g.n+')';}).join(', ')+'</b> 자리가 조금 걸립니다. '+
+                                                          '이 자리는 '+badG[0].sub+'과 이어지는 수예요.';
+
+  var alt = '';
+  if (r.score < 1){
+    var alts = recommendNames(f.surname, f.gender, lack, c1.k + c2.k, 4);
+    if (alts.length){
+      alt = '<h3 class="sub">이런 이름도 한번 보실까요</h3>'+
+        '<div class="say">지금 이름을 물리자는 뜻은 아닙니다. 같은 사주로 골라 본 이름들이니, 견주어 보시라고 놓아 둡니다.</div>'+
+        '<div class="cards">'+alts.map(function(o){ return bujeok(o, f.surname, ''); }).join('')+'</div>';
+    }
+  }
+
+  var html = '<div class="paper">'+
+    '<div class="seal-line"><div class="seal">이름<br>풀이</div>'+
+    '<div><h2>'+fullK+'</h2><p>'+STEMS[saju.year.stem]+BRANCHES[saju.year.branch]+'년생 · '+
+    (f.hour===null ? '시간 모름' : '태어난 시 반영')+'</p></div></div>'+
+
+    '<div class="verdict"><span class="big">'+v.big+'</span>'+
+    '<div class="whole">'+fullH+'</div>'+
+    '<div class="score">사주 궁합과 획수를 합쳐 '+r.score.toFixed(1)+'점</div></div>'+
+    '<div class="say">'+v.line+'</div>'+
+
+    '<h3 class="sub">아기 사주</h3>'+
+    renderSaju(saju, tally, lack)+
+    '<div class="say">'+lackSentence(lack, f.hour !== null)+'</div>'+
+
+    '<h3 class="sub">이름의 소리</h3>'+
+    '<div class="say">'+c1.k+' 소리는 <b class="el-'+r.e1+'">'+EL_HANJA[r.e1]+' '+EL_WORD[r.e1]+'</b>, '+
+    c2.k+' 소리는 <b class="el-'+r.e2+'">'+EL_HANJA[r.e2]+' '+EL_WORD[r.e2]+'</b>의 기운을 냅니다. '+
+    soundLine+'</div>'+
+
+    '<h3 class="sub">획수 (원형이정)</h3>'+
+    gyeokTable(r.gyeok)+
+    '<div class="say">'+(c1.h ? f.surname.h+'('+f.surname.s+'획) · '+c1.h+'('+c1.s+'획) · '+c2.h+'('+c2.s+'획)로 잡았습니다. ' : '')+
+    suriLine+'</div>'+
+
+    alt +
+    '</div>';
+
+  var box = $('chk-result');
+  box.innerHTML = html;
+  box.classList.add('show');
+  box.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+// 오늘 날짜를 기본값으로
+(function(){
+  var t = new Date();
+  var v = t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
+  $('rec-date').value = v;
+  $('chk-date').value = v;
+})();
+</script>
+</body>
+</html>
