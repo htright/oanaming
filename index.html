@@ -320,7 +320,11 @@ footer li{margin-bottom:3px;}
   <section id="pane-rec">
     <div class="paper">
       <label class="q">아기 성(姓)이 어떻게 되나요?</label>
-      <select id="rec-surname"></select>
+      <div class="ac-wrap">
+        <input type="text" id="rec-surname-q" class="ac-input" placeholder="성을 입력해 보세요 (예: 김, 金)" autocomplete="off">
+        <input type="hidden" id="rec-surname">
+        <div class="ac-list" id="rec-surname-list"></div>
+      </div>
       <small class="hint">가장 많이 쓰는 한자를 기준으로 잡았어요. 집안에서 쓰는 한자가 다를 수 있습니다.</small>
 
       <label class="q">아들인가요, 딸인가요?</label>
@@ -349,7 +353,11 @@ footer li{margin-bottom:3px;}
   <section id="pane-chk" style="display:none">
     <div class="paper">
       <label class="q">아기 성(姓)</label>
-      <select id="chk-surname"></select>
+      <div class="ac-wrap">
+        <input type="text" id="chk-surname-q" class="ac-input" placeholder="성을 입력해 보세요 (예: 김, 金)" autocomplete="off">
+        <input type="hidden" id="chk-surname">
+        <div class="ac-list" id="chk-surname-list"></div>
+      </div>
 
       <label class="q">지어 두신 이름 (두 글자)</label>
       <div style="display:flex;gap:10px">
@@ -1006,12 +1014,56 @@ function verdictOf(score){
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
 
-// 성씨 select 채우기
-[ 'rec-surname','chk-surname' ].forEach(function(id){
-  $(id).innerHTML = SURNAMES.map(function(s){
-    return '<option value="'+s.k+'">'+s.k+' ('+s.h+' · '+s.s+'획)</option>';
-  }).join('');
-});
+// 성씨 찾기 (가나다순으로 정렬해 두고, 입력한 글자로 걸러 줍니다)
+var SURNAME_SORTED = SURNAMES.slice().sort(function(a,b){ return a.k.localeCompare(b.k,'ko'); });
+
+function buildSurnameSearch(prefix, defaultK){
+  var input = $(prefix+'-q'), hidden = $(prefix), list = $(prefix+'-list');
+
+  function search(q){
+    q = q.trim();
+    var out = [];
+    for (var i = 0; i < SURNAME_SORTED.length; i++){
+      var s = SURNAME_SORTED[i];
+      if (!q || s.k.indexOf(q) >= 0 || s.h.indexOf(q) >= 0) out.push(i);
+    }
+    if (!out.length){
+      list.innerHTML = '<div class="ac-empty">일치하는 성씨가 없어요</div>';
+    } else {
+      list.innerHTML = out.map(function(i){
+        var s = SURNAME_SORTED[i];
+        return '<div class="ac-item" data-i="'+i+'"><b>'+s.k+'</b><span class="ac-h">'+s.h+'</span>'+
+          '<span class="ac-m">'+s.s+'획</span></div>';
+      }).join('');
+    }
+    list.classList.add('show');
+  }
+
+  function pick(i){
+    var s = SURNAME_SORTED[i];
+    hidden.value = i;
+    input.value = s.k+' ('+s.h+' · '+s.s+'획)';
+    list.classList.remove('show');
+  }
+
+  input.addEventListener('input', function(){ hidden.value = ''; search(input.value); });
+  // 성씨는 서른 개뿐이라, 눌러 두면 가나다순 전체 목록부터 바로 훑어볼 수 있게 열어 줍니다
+  input.addEventListener('focus', function(){ input.select(); search(''); });
+  input.addEventListener('blur', function(){ setTimeout(function(){ list.classList.remove('show'); }, 150); });
+  input.addEventListener('keydown', function(e){ if (e.key === 'Escape') list.classList.remove('show'); });
+  list.addEventListener('mousedown', function(e){
+    var item = e.target.closest('.ac-item');
+    if (!item) return;
+    e.preventDefault();
+    pick(+item.dataset.i);
+  });
+
+  for (var i = 0; i < SURNAME_SORTED.length; i++){
+    if (SURNAME_SORTED[i].k === defaultK){ pick(i); break; }
+  }
+}
+buildSurnameSearch('rec-surname', '김');
+buildSurnameSearch('chk-surname', '김');
 
 // 이름 한자 찾기 (인덱스가 어긋나지 않도록 정렬된 배열 하나만 씁니다)
 var HANJA_SORTED = HANJA.slice().sort(function(a,b){ return a.k.localeCompare(b.k,'ko'); });
@@ -1133,8 +1185,9 @@ function readForm(prefix){
     if (b === 0 && $(prefix+'-jasi-late').checked) hour = 0;
   }
 
-  var sk = $(prefix+'-surname').value;
-  var surname = SURNAMES.filter(function(s){ return s.k === sk; })[0];
+  var si = $(prefix+'-surname').value;
+  if (si === '') return {error:'검색해서 나온 목록에서 성(姓)을 눌러 골라 주세요.'};
+  var surname = SURNAME_SORTED[+si];
 
   return {y:y, m:m, d:d, hour:hour, surname:surname, gender: chipValue(prefix+'-gender')};
 }
