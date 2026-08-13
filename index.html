@@ -133,6 +133,23 @@ select:focus,input:focus{border-color:var(--gold);}
 .jasi-note.show{display:block;}
 .jasi-note input{width:auto;margin-right:6px;vertical-align:-2px;}
 
+/* ── 한자 찾기 (자동완성) ────────────── */
+.ac-wrap{position:relative;}
+.ac-input:disabled{opacity:.5;cursor:not-allowed;}
+.ac-list{
+  display:none;position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:20;
+  max-height:270px;overflow-y:auto;
+  background:#fffaf0;border:2px solid var(--hanji-dark);border-radius:10px;
+  box-shadow:0 8px 18px rgba(60,45,30,.2);
+}
+.ac-list.show{display:block;}
+.ac-item{padding:9px 12px;cursor:pointer;font-size:17px;border-bottom:1px solid var(--hanji-dark);}
+.ac-item:last-child{border-bottom:none;}
+.ac-item:hover,.ac-item.hi{background:var(--hanji-deep);}
+.ac-item .ac-h{font-family:'Noto Serif KR',serif;color:var(--dan-red-deep);margin:0 3px;}
+.ac-item .ac-m{color:var(--ink-soft);font-size:14px;}
+.ac-empty{padding:10px 12px;color:var(--ink-soft);font-size:15px;}
+
 .go{
   display:block;width:100%;margin-top:30px;
   font-family:'Do Hyeon',sans-serif;font-size:23px;letter-spacing:1px;
@@ -336,10 +353,18 @@ footer li{margin-bottom:3px;}
 
       <label class="q">지어 두신 이름 (두 글자)</label>
       <div style="display:flex;gap:10px">
-        <select id="chk-c1" style="flex:1"></select>
-        <select id="chk-c2" style="flex:1"></select>
+        <div class="ac-wrap" style="flex:1">
+          <input type="text" id="chk-c1-q" class="ac-input" placeholder="첫 글자 — 한글/한자/뜻으로 찾기" autocomplete="off">
+          <input type="hidden" id="chk-c1">
+          <div class="ac-list" id="chk-c1-list"></div>
+        </div>
+        <div class="ac-wrap" style="flex:1">
+          <input type="text" id="chk-c2-q" class="ac-input" placeholder="둘째 글자 — 한글/한자/뜻으로 찾기" autocomplete="off">
+          <input type="hidden" id="chk-c2">
+          <div class="ac-list" id="chk-c2-list"></div>
+        </div>
       </div>
-      <small class="hint">찾으시는 한자가 목록에 없으면 아래에서 직접 적어 주세요.</small>
+      <small class="hint">한글 소리, 한자, 뜻 아무 것으로나 찾으실 수 있어요. 찾으시는 한자가 목록에 없으면 아래에서 직접 적어 주세요.</small>
 
       <div style="margin-top:12px">
         <label style="font-size:17px;color:var(--ink-soft)"><input type="checkbox" id="chk-manual" style="width:auto;margin-right:6px;vertical-align:-2px">한자를 직접 적을게요</label>
@@ -971,19 +996,58 @@ function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return {'&':'&a
   }).join('');
 });
 
-// 이름 한자 select 채우기 (인덱스가 어긋나지 않도록 정렬된 배열 하나만 씁니다)
+// 이름 한자 찾기 (인덱스가 어긋나지 않도록 정렬된 배열 하나만 씁니다)
 var HANJA_SORTED = HANJA.slice().sort(function(a,b){ return a.k.localeCompare(b.k,'ko'); });
-var hanjaOptions = HANJA_SORTED.map(function(c,i){
-  return '<option value="'+i+'">'+c.k+' '+c.h+' — '+c.m+' ('+c.s+'획)</option>';
-}).join('');
-$('chk-c1').innerHTML = hanjaOptions;
-$('chk-c2').innerHTML = hanjaOptions;
-// 처음 열었을 때 같은 글자 두 개가 잡혀 있지 않도록
-(function(){
-  function idxOf(k,h){ for (var i=0;i<HANJA_SORTED.length;i++){ if (HANJA_SORTED[i].k===k && HANJA_SORTED[i].h===h) return i; } return 0; }
-  $('chk-c1').value = idxOf('서','瑞');
-  $('chk-c2').value = idxOf('준','俊');
-})();
+function idxOfHanja(k,h){ for (var i=0;i<HANJA_SORTED.length;i++){ if (HANJA_SORTED[i].k===k && HANJA_SORTED[i].h===h) return i; } return -1; }
+
+// 목록이 200자가 넘다 보니, select로 하나하나 스크롤하기보다
+// 입력한 글자로 걸러지는 자동완성이 훨씬 빠릅니다.
+function buildHanjaSearch(prefix, defaultK, defaultH){
+  var input = $(prefix+'-q'), hidden = $(prefix), list = $(prefix+'-list');
+
+  function search(q){
+    q = q.trim();
+    if (!q){ list.classList.remove('show'); return; }
+    var out = [];
+    for (var i = 0; i < HANJA_SORTED.length && out.length < 8; i++){
+      var c = HANJA_SORTED[i];
+      if (c.k.indexOf(q) >= 0 || c.h.indexOf(q) >= 0 || c.m.indexOf(q) >= 0) out.push(i);
+    }
+    if (!out.length){
+      list.innerHTML = '<div class="ac-empty">일치하는 한자가 없어요. 아래 "한자를 직접 적을게요"를 써 보세요.</div>';
+    } else {
+      list.innerHTML = out.map(function(i){
+        var c = HANJA_SORTED[i];
+        return '<div class="ac-item" data-i="'+i+'"><b>'+c.k+'</b><span class="ac-h">'+c.h+'</span>'+
+          '<span class="ac-m">'+esc(c.m)+' · '+c.s+'획</span></div>';
+      }).join('');
+    }
+    list.classList.add('show');
+  }
+
+  function pick(i){
+    var c = HANJA_SORTED[i];
+    hidden.value = i;
+    input.value = c.k+' '+c.h+' ('+c.m+')';
+    list.classList.remove('show');
+  }
+
+  input.addEventListener('input', function(){ hidden.value = ''; search(input.value); });
+  input.addEventListener('focus', function(){ input.select(); if (input.value) search(input.value); });
+  input.addEventListener('blur', function(){ setTimeout(function(){ list.classList.remove('show'); }, 150); });
+  input.addEventListener('keydown', function(e){ if (e.key === 'Escape') list.classList.remove('show'); });
+  list.addEventListener('mousedown', function(e){
+    var item = e.target.closest('.ac-item');
+    if (!item) return;
+    e.preventDefault();
+    pick(+item.dataset.i);
+  });
+
+  var def = idxOfHanja(defaultK, defaultH);
+  if (def >= 0) pick(def);
+}
+buildHanjaSearch('chk-c1', '서', '瑞');
+buildHanjaSearch('chk-c2', '준', '俊');
 
 // 시진 버튼 만들기
 function buildSijin(gridId, noteId){
@@ -1029,8 +1093,8 @@ document.querySelectorAll('.tab').forEach(function(t){
 // 직접 입력 토글
 $('chk-manual').addEventListener('change', function(){
   $('chk-manual-box').style.display = this.checked ? 'block' : 'none';
-  $('chk-c1').disabled = this.checked;
-  $('chk-c2').disabled = this.checked;
+  $('chk-c1-q').disabled = this.checked;
+  $('chk-c2-q').disabled = this.checked;
 });
 
 // 폼에서 입력값 거두기
@@ -1156,8 +1220,10 @@ $('chk-go').addEventListener('click', function(){
     c1 = {h:'', k:k1, m:'직접 적으신 글자', s:s1, g:'공용'};
     c2 = {h:'', k:k2, m:'직접 적으신 글자', s:s2, g:'공용'};
   } else {
-    c1 = HANJA_SORTED[+$('chk-c1').value];
-    c2 = HANJA_SORTED[+$('chk-c2').value];
+    var i1 = $('chk-c1').value, i2 = $('chk-c2').value;
+    if (i1 === '' || i2 === ''){ $('chk-err').textContent = '검색 목록에서 한자를 눌러 골라 주세요.'; return; }
+    c1 = HANJA_SORTED[+i1];
+    c2 = HANJA_SORTED[+i2];
     if (c1.k === c2.k && c1.h === c2.h){ $('chk-err').textContent = '같은 글자 두 개네요. 둘째 글자를 다시 골라 주세요.'; return; }
   }
 
