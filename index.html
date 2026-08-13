@@ -489,9 +489,11 @@ var SURI_WORD = {
    요즘 우리말 이름에서 그 자리에 잘 앉지 않는 소리를 추려 두었습니다. */
 var HEAD_AWKWARD = ['곡','귀','금','록','림','무','묘','복','봉','부','사','숙','순','충','표','풍','필',
                     '의','매','란','려','량','두','녕','견','결','개','군','균','광','탁','백','설','종','언','애','요','만',
-                    '모','평','추','귀','필','부','충','방','박','배','범','병'];
+                    '모','평','추','귀','필','부','충','방','박','배','범','병',
+                    '문','보']; // '정문'·'정보'처럼 흔한 낱말과 겹치는 소리라 성씨를 붙이면 유독 어색합니다
 var TAIL_AWKWARD = ['곡','귀','금','두','록','림','만','매','묘','무','박','방','배','백','복','부','사',
-                    '초','충','탁','표','풍','평','의','개','군','녕','란','묘','숙','자','조'];
+                    '초','충','탁','표','풍','평','의','개','군','녕','란','묘','숙','자','조',
+                    '문','보','결']; // '가문'·'귀문'·'경보'·'정결'처럼 실제 단어처럼 읽히거나 예스러워 요즘 이름 끝소리로는 잘 안 쓰는 것들
 // 요즘 이름에 많이 오르는 소리
 var FAVORED = ['서','준','지','하','은','민','예','유','윤','주','현','우','아','연','진','도','소','시',
                '재','성','채','태','원','규','건','호','인','영','수','승','선','세','온','찬','정','희','상','신'];
@@ -888,9 +890,19 @@ function pickCandidates(gender, need){
   return {direct: direct, pool: direct.concat(helper)};
 }
 
+// 같은 소리의 한자가 여럿이어도 '몇 가지 소리'인지가 실제 다양성입니다
+function distinctSounds(arr){
+  var seen = {};
+  arr.forEach(function(c){ seen[c.k] = true; });
+  return Object.keys(seen).length;
+}
+
 function recommendNames(surname, gender, need, exclude, limit){
   var cand = pickCandidates(gender, need);
-  var first = cand.direct.length >= 6 ? cand.direct : cand.pool;
+  // 어색한 첫소리를 빼고도 소리가 넉넉해야 '바로 맞는 오행'만 씁니다.
+  // 딸/아들처럼 성별로 갈라 좁아진 경우엔 상생 글자까지 첫소리로 열어 줍니다.
+  var eligibleDirect = cand.direct.filter(function(c){ return HEAD_AWKWARD.indexOf(c.k) < 0; });
+  var first = distinctSounds(eligibleDirect) >= 6 ? cand.direct : cand.pool;
   var second = cand.pool;
   var out = [];
 
@@ -902,8 +914,10 @@ function recommendNames(surname, gender, need, exclude, limit){
       if (exclude && exclude === full) continue;
       if (full === surname.k + a.k) continue;              // 성과 겹치는 소리 피하기
       if (a.k === surname.k || b.k === surname.k) continue;
+      var nat = naturalness(a, b);
+      if (nat < 0) continue;                                // 소리가 어색한 조합은 추천 후보에서 아예 뺍니다
       var r = scoreName(surname.s, a, b, need);
-      out.push({c1:a, c2:b, kr:full, hj:a.h + b.h, r:r, rank: r.score + naturalness(a, b)});
+      out.push({c1:a, c2:b, kr:full, hj:a.h + b.h, r:r, rank: r.score + nat});
     }
   }
 
